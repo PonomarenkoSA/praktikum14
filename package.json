@@ -1,0 +1,35 @@
+{
+  "name": "praktikum13",
+  "version": "1.0.0",
+  "description": "Server development",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PonomarenkoSA/praktikum13.git"
+  },
+  "author": "Sergey Ponomarenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PonomarenkoSA/praktikum13/issues"
+  },
+  "homepage": "https://github.com/PonomarenkoSA/praktikum13#readme",
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.25",
+    "validator": "^13.1.1"
+  }
+}
