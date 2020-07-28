@@ -25,7 +25,12 @@ module.exports.createUser = (req, res) => {
         email,
         password: hash,
       }))
-      .then((user) => res.send({ data: user }))
+      .then(() => res.send({
+        name,
+        about,
+        avatar,
+        email,
+      }))
       .catch((err) => res.status(400).send({ error: err.message }));
   } catch (err) {
     res.status(500).send({ message: 'Произошла ошибка' });
@@ -46,9 +51,9 @@ module.exports.login = (req, res) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'f20109237f18715dfde3b12696c753568eee175cdb71d317271b0cb8fa0376e8', { expireIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'f20109237f18715dfde3b12696c753568eee175cdb71d317271b0cb8fa0376e8', { expiresIn: '7d' });
       res
-        .cookie('jwt', token, {
+        .cookie('jwtCookie', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
           sameSite: true,

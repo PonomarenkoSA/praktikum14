@@ -14,7 +14,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => reg.test(value),
-      message: (props) => `${props.value} is not a valid link!`,
+      message: (props) => `${props.value} Невалидная ссылка!`,
     },
   },
   owner: {
