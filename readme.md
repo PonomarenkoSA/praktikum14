@@ -1,4 +1,4 @@
-# A server-side node.js application that uses express and "MongoDB". "The Mesto"
+# A server-side node.js application that uses express, "MongoDB" with authorization. "The Mesto"
 
 **version 0.0.1**
 
@@ -6,7 +6,7 @@
 
 #### Описание:
 
-Проект является учебным и создан в рамках изучения курса "Веб-разработчик" Яндекс.Практикум.
+Проект является учебным и создан в рамках изучения курса "Веб-разработчик" Яндекс.Практикум. В проекте реализованы добавление, аутентификация и авторизация пользователей.
 
 Состав проекта:
 
