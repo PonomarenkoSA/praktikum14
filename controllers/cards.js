@@ -12,7 +12,12 @@ module.exports.createCard = (req, res) => {
   try {
     Card.create({ name, link, owner: req.user._id })
       .then((card) => res.send({ data: card }))
-      .catch((err) => res.status(500).send({ error: err.message }));
+      .catch((err) => {
+        if (err.name === 'ValidationError') {
+          return res.status(400).send({ error: err.message });
+        }
+        return res.status(500).send({ error: err.message });
+      });
   } catch (err) {
     res.status(500).send({ message: 'Произошла ошибка' });
   }
@@ -29,8 +34,13 @@ module.exports.deleteCard = (req, res) => {
           .then((cardDel) => res.send({ data: cardDel }))
           .catch((err) => res.status(500).send({ error: err.message }));
       })
-      .catch((err) => res.status(403).send({ error: err.message }));
+      .catch((err) => {
+        if (err.message === `Карточка c id: ${req.params.cardId} не найдена`) {
+          return res.status(404).send({ error: err.message });
+        }
+        return res.status(403).send({ error: err.message });
+      });
   } catch (err) {
-    res.status(500).send({ message: 'Произошла ошибка' });
+    res.status(500).send({ error: err.message });
   }
 };

@@ -16,34 +16,50 @@ module.exports.createUser = (req, res) => {
     email,
     password,
   } = req.body;
-  try {
-    bcrypt.hash(password, 10)
-      .then((hash) => User.create({
-        name,
-        about,
-        avatar,
-        email,
-        password: hash,
-      }))
-      .then(() => res.send({
-        name,
-        about,
-        avatar,
-        email,
-      }))
-      .catch((err) => res.status(400).send({ error: err.message }));
-  } catch (err) {
-    res.status(500).send({ message: 'Произошла ошибка' });
-  }
+  User.validate({ password }, ['password'])
+    .then(() => {
+      try {
+        bcrypt.hash(password, 10)
+          .then((hash) => User.create({
+            name,
+            about,
+            avatar,
+            email,
+            password: hash,
+          }))
+          .then(() => res.status(201).send({
+            name,
+            about,
+            avatar,
+            email,
+          }))
+          .catch((err) => {
+            if (err.name === 'ValidationError') {
+              return res.status(400).send({ error: err.message });
+            }
+            return res.status(500).send({ error: err.message });
+          });
+      } catch (err) {
+        res.status(500).send({ error: err.message });
+      }
+    })
+    .catch(() => {
+      res.status(400).send({ error: 'Пароль должен быть не менее 8 символов' });
+    });
 };
 
 module.exports.getOneUser = (req, res) => {
   try {
     User.findById(req.params.userId).orFail(new Error(`Пользователь c id: ${req.params.userId} не найден`))
       .then((user) => res.send({ data: user }))
-      .catch((err) => res.status(500).send({ error: err.message }));
+      .catch((err) => {
+        if (err.message === `Пользователь c id: ${req.params.userId} не найден`) {
+          return res.status(404).send({ error: err.message });
+        }
+        return res.status(500).send({ error: err.message });
+      });
   } catch (err) {
-    res.status(500).send({ message: 'Произошла ошибка' });
+    res.status(500).send({ error: err.message });
   }
 };
 
@@ -61,6 +77,6 @@ module.exports.login = (req, res) => {
         .end();
     })
     .catch((err) => {
-      res.status(401).send({ message: err.message });
+      res.status(401).send({ error: err.message });
     });
 };
